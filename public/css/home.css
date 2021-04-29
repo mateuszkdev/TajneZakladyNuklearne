@@ -1,0 +1,24 @@
+#home-content {
+  text-align: center;
+  margin-top: 10%;
+}
+
+#home-content h1 {
+  text-align: center;
+  text-shadow: 1px 1px 10px #6c6c6a;
+  font-size: 40px;
+}
+
+#home-content form {
+  font-size: 20;
+}
+
+#home-content form button:hover {
+  background-color: #424040;
+  color: #424040;
+}
+
+#home-content .error {
+  color: #ff5a5a;
+  font-size: 30px;
+}
