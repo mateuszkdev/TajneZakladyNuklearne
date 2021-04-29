@@ -25,6 +25,10 @@ export default class extends Route {
             error: 'Nie znasz hasła? Nie ładnie, oj, nie ładnie.'
         })
 
+        // test sessji 
+        req.session.cookie.maxAge = 10 * 1000 * 60
+        return res.render('home', { error: `Test, ${req.session.cookie.maxAge}` })
+
     }
 
 }
