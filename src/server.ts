@@ -36,7 +36,7 @@ export class Server {
 
         const SESSION = session
 
-        this.app.use(SESSION({ secret: sessionSecret }))
+        this.app.use(SESSION({ secret: sessionSecret, cookie: { maxAge: 5 * 100000 } }))
 
     }
 
