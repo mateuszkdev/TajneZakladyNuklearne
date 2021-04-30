@@ -12,9 +12,10 @@ export default class extends Route {
 
     }
 
-    async execute (req: Request, res: Response): Promise<any> {
+    async execute (req: Request | any, res: Response): Promise<any> {
 
-        res.render('home')
+        if (!req.session.ok) return res.render('home')
+        else return res.send("ok")
 
     }
 

@@ -13,7 +13,7 @@ export default class extends Route {
 
     }
 
-    async execute (req: Request, res: Response): Promise<any> {
+    async execute (req: Request | any, res: Response): Promise<any> {
 
         const inputPassword: string = req.body.passwd
 
@@ -25,10 +25,8 @@ export default class extends Route {
             error: 'Nie znasz hasła? Nie ładnie, oj, nie ładnie.'
         })
 
-        // test sessji 
-        req.session.cookie.maxAge = 10 * 1000 * 60
-        return res.render('home', { error: `Test, ${req.session.cookie.maxAge}` })
-
+        req.session.ok = true
+        return res.redirect('/')
     }
 
 }
