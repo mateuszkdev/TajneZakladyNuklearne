@@ -62,29 +62,26 @@ class ZenonMan {
 
         window.addEventListener('keydown', (e) => {
 
-            let _x_ = this.player.x
-            let _y_ = this.player.y
-
             switch (e.keyCode) {
 
                 case keyCodes.keyLeft:
 
-
+                        if (this.x - 1 >= 0) return this.move(--this.x, this.y)
 
                     break;
                 case keyCodes.keyRight:
 
-
+                        if (this.x + 1 <= 20) return this.move(++this.x, this.y)
 
                     break;
                 case keyCodes.keyUp:
 
-
+                        if (this.y - 1 >= 0) return this.move(this.x, --this.x)
 
                     break;
                 case keyCodes.keyDown:
 
-
+                        if (this.y + 1 <= 20) return this.move(this.x, ++this.y)
 
                     break;
                 default: return
@@ -118,6 +115,7 @@ class ZenonMan {
     start () {
 
         this.renderMap()
+        this.playerMovement()
 
     }
 
