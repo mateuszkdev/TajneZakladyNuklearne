@@ -9,14 +9,14 @@ class ZenonMan {
 
     constructor () {
 
-        this.player = { x: 0, y: 0 }
+        this.player = { x: 4, y: 5 }
         this.game = true
         this.playerFrozen = false
 
     }
 
     endGame () {
-
+        console.log('game end')
     }
 
     changeClass (x, y, newClass) {
@@ -33,13 +33,14 @@ class ZenonMan {
 
     isEnd (x, y) {
 
-        if (document.getElementById(`${x}:${y}`).className = 'bajkopisarz_zenon') return true
+        if (document.getElementById(`${x}:${y}`).className == 'bajkopisarz_zenon') return true
         else return false
 
     }
 
     move(x, y) {
 
+        console.log(x,y)
         if (this.isEnd(x, y)) {
             this.game = false
             return this.endGame()
@@ -48,13 +49,13 @@ class ZenonMan {
         if (!this.game) return
         if (this.playerFrozen) return
 
-        let _x_ = this.player.x
-        let _y_ = this.player.y
+        if (this.isWall(x, y)) return
 
-        if (this.isWall(_x_, _y_)) return
-
-        this.changeClass(x, y, 'floor')
+        this.changeClass(this.player.x, this.player.y, 'floor')
         this.changeClass(x, y, 'pierwszak')
+
+        this.player.x = x
+        this.player.y = y
 
     }
 
@@ -62,26 +63,29 @@ class ZenonMan {
 
         window.addEventListener('keydown', (e) => {
 
+            let x = this.player.x
+            let y = this.player.y
+
             switch (e.keyCode) {
 
-                case keyCodes.keyLeft:
-
-                        if (this.x - 1 >= 0) return this.move(--this.x, this.y)
-
-                    break;
-                case keyCodes.keyRight:
-
-                        if (this.x + 1 <= 20) return this.move(++this.x, this.y)
-
-                    break;
                 case keyCodes.keyUp:
 
-                        if (this.y - 1 >= 0) return this.move(this.x, --this.x)
+                        if (this.player.x - 1 >= 0) return this.move(--x, y)
 
                     break;
                 case keyCodes.keyDown:
 
-                        if (this.y + 1 <= 20) return this.move(this.x, ++this.y)
+                        if (this.player.x + 1 <= 20) return this.move(++x, y)
+
+                    break;
+                case keyCodes.keyLeft:
+
+                        if (this.player.y- 1 >= 0) return this.move(x, --y)
+
+                    break;
+                case keyCodes.keyRight:
+
+                        if (this.player.y + 1 <= 20) return this.move(x, ++y)
 
                     break;
                 default: return
@@ -115,6 +119,8 @@ class ZenonMan {
     start () {
 
         this.renderMap()
+        document.getElementById(`${this.player.x}:${this.player.y}`).className = 'pierwszak'
+        document.getElementById(`10:10`).className = 'wall'
         this.playerMovement()
 
     }
