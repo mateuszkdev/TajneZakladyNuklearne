@@ -2,7 +2,7 @@ export default class Generator {
 
     get get (): string {
 
-        let passwd: string = '@{month}TzN{day}@'
+        let passwd: string = require('../../settings/password.json').passwd
 
         const now = new Date()
 
