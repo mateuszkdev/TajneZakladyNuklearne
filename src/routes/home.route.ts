@@ -15,7 +15,7 @@ export default class extends Route {
     async execute (req: Request | any, res: Response): Promise<any> {
         
         if (!req.session.ok) return res.render('login')
-        else return res.send(req.device.type)
+        else return res.render('home')
 
     }
 

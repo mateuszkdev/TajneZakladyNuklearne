@@ -13,5 +13,6 @@ body
             input(type="password" name="passwd")
             button(type="submit" id="btn") > 
 
-        p.error
-            | #{error}
+        p.error #{error}
+        if error
+            a(href="/howlogin" class="error") hmm 

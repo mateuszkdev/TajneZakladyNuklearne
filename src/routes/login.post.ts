@@ -21,7 +21,7 @@ export default class extends Route {
 
         console.log(correctPassword, inputPassword)
 
-        if (correctPassword != inputPassword) return res.render('home', {
+        if (correctPassword != inputPassword) return res.render('login', {
             error: 'Nie znasz hasła? Nie ładnie, oj, nie ładnie.'
         })
 

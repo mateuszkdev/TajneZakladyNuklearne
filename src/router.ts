@@ -46,6 +46,7 @@ export default class Router {
 
         })
 
+        app.get('/howlogin', (req, res) => res.render('howlogin'))
         app.get('*', (req, res) => res.redirect('/'))
 
     }
