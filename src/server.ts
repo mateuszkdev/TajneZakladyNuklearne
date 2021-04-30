@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import session from 'express-session'
 import { join } from 'path' 
+import device from 'express-device'
 
 export interface ServerConfig {
     port: number
@@ -27,6 +28,7 @@ export class Server {
         this.app.use(express.static(join(__dirname, '..', 'public')))
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: false }))
+        this.app.use(device.capture())
 
     }
 
