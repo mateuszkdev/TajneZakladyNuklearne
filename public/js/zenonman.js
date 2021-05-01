@@ -20,7 +20,7 @@ class ZenonMan {
         this.playerFrozen = false
 
         this.coins = {
-            max: 60,
+            max: 56,
             owned: 0,
             total: 0
         }
@@ -32,8 +32,9 @@ class ZenonMan {
         return document.getElementById('TopBar').innerHTML = text
     }
 
-    endGame () {
-        console.log('game end')
+    endGame (type) {
+        this.game = false
+        return document.getElementById('TopBar').innerHTML = `Koniec gry: ${type}`
     }
 
     changeClass (x, y, newClass) {
@@ -48,9 +49,16 @@ class ZenonMan {
 
     }
 
-    isEnd (x, y) {
+    isDefeat (x, y) {
 
         if (document.getElementById(`${x}:${y}`).className == 'bajkopisarz_zenon') return true
+        else return false
+
+    }
+    
+    isWin () {
+
+        if (this.coins.total <= this.coins.owned) return true
         else return false
 
     }
@@ -64,27 +72,37 @@ class ZenonMan {
 
     addCoin () {
         this.coins.owned++
+        console.log(this.coins)
     }
 
     move(x, y) {
 
         console.log(x,y)
-        if (this.isEnd(x, y)) {
+        if (this.isDefeat(x, y)) {
             this.game = false
-            return this.endGame()
+            return this.endGame('defeat')
+        }
+
+        if (this.playerFrozen) return
+
+        if (this.isCoin(x, y)) {
+            this.addCoin()
+            this.updateTopBar()
         }
     
         if (!this.game) return
-        if (this.playerFrozen) return
 
         if (this.isWall(x, y)) return
-        if (this.isCoin(x, y)) this.addCoin()
 
         this.changeClass(this.player.x, this.player.y, 'floor')
         this.changeClass(x, y, 'pierwszak')
 
         this.player.x = x
         this.player.y = y
+
+        if (this.isWin()) {
+            return this.endGame('win')
+        }
 
     }
 
@@ -161,7 +179,7 @@ class ZenonMan {
             return ~~(Math.random() * 20)
         }
 
-        for (let i = 0; i <= this.coins.max; i) {
+        for (let i = 0; i < this.coins.max; i) {
             let x = randomPos()
             let y = randomPos()
 
