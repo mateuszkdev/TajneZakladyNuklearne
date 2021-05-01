@@ -19,6 +19,11 @@ class ZenonMan {
         this.game = true
         this.playerFrozen = false
 
+        this.coins = {
+            total: 60,
+            owned: 0
+        }
+
     }
 
     endGame () {
@@ -132,11 +137,30 @@ class ZenonMan {
 
     }
 
+    coinsGenerator () {
+
+        const randomPos = () => {
+            return ~~(Math.random() * 20)
+        }
+
+        for (let i = 0; i <= this.coins.total; i) {
+            let x = randomPos()
+            let y = randomPos()
+
+            if (document.getElementById(`${x}:${y}`).className == 'floor') {
+                i++
+                document.getElementById(`${x}:${y}`).className = 'coin'
+            }
+        }
+
+    }
+
     start () {
 
         this.renderMap()
         this.wallsGenerator()
         document.getElementById(`${this.player.x}:${this.player.y}`).className = 'pierwszak'
+        this.coinsGenerator()
         this.playerMovement()
 
     }
