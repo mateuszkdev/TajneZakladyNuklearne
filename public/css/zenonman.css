@@ -1,11 +1,7 @@
 td {
   width: 28px;
   height: 28px;
-  margin: 0;
-}
-
-tr {
-  margin: 0;
+  padding: 0px;
 }
 
 #TopBar {

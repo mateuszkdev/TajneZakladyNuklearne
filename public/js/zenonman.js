@@ -72,12 +72,10 @@ class ZenonMan {
 
     addCoin () {
         this.coins.owned++
-        console.log(this.coins)
     }
 
     move(x, y) {
 
-        console.log(x,y)
         if (this.isDefeat(x, y)) {
             this.game = false
             return this.endGame('defeat')
