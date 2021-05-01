@@ -12,7 +12,7 @@ const config = require('../settings/ServerConfig.json') as ServerConfig
 
 export class Server {
 
-    app: Application = express()
+    app: Application
 
     constructor () {
 

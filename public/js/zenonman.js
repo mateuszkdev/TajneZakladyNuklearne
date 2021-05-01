@@ -20,10 +20,16 @@ class ZenonMan {
         this.playerFrozen = false
 
         this.coins = {
-            total: 60,
-            owned: 0
+            max: 60,
+            owned: 0,
+            total: 0
         }
 
+    }
+
+    updateTopBar () {
+        const text = `Coins: ${this.coins.owned}/${this.coins.total}`
+        return document.getElementById('TopBar').innerHTML = text
     }
 
     endGame () {
@@ -49,6 +55,17 @@ class ZenonMan {
 
     }
 
+    isCoin (x, y) {
+
+        if (document.getElementById(`${x}:${y}`).className == 'coin') return true
+        else return false
+
+    }
+
+    addCoin () {
+        this.coins.owned++
+    }
+
     move(x, y) {
 
         console.log(x,y)
@@ -61,6 +78,7 @@ class ZenonMan {
         if (this.playerFrozen) return
 
         if (this.isWall(x, y)) return
+        if (this.isCoin(x, y)) this.addCoin()
 
         this.changeClass(this.player.x, this.player.y, 'floor')
         this.changeClass(x, y, 'pierwszak')
@@ -115,7 +133,7 @@ class ZenonMan {
             map += '<tr>'
 
             for (let y = 0; y <= 20; y++) {
-                map += `<td id="${x}:${y}" class="floor" onclick="dev('${x}:${y}')"> </td>`
+                map += `<td id="${x}:${y}" class="floor"> </td>`
             }
 
             map += '</tr>'
@@ -143,12 +161,13 @@ class ZenonMan {
             return ~~(Math.random() * 20)
         }
 
-        for (let i = 0; i <= this.coins.total; i) {
+        for (let i = 0; i <= this.coins.max; i) {
             let x = randomPos()
             let y = randomPos()
 
             if (document.getElementById(`${x}:${y}`).className == 'floor') {
                 i++
+                this.coins.total++
                 document.getElementById(`${x}:${y}`).className = 'coin'
             }
         }
@@ -162,6 +181,7 @@ class ZenonMan {
         document.getElementById(`${this.player.x}:${this.player.y}`).className = 'pierwszak'
         this.coinsGenerator()
         this.playerMovement()
+        this.updateTopBar()
 
     }
 

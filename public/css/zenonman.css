@@ -1,11 +1,15 @@
 td {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   margin: 0;
 }
 
 tr {
   margin: 0;
+}
+
+#TopBar {
+  font-size: 21px;
 }
 
 .floor {
@@ -17,7 +21,7 @@ tr {
 }
 
 .pierwszak {
-  background-image: url("./img/zenonman/pierwszak.png");
+  background-color: chocolate;
 }
 
 .wall {
@@ -25,5 +29,5 @@ tr {
 }
 
 .coin {
-  background-color: burlywood;
+  background-color: rgba(222, 184, 135, 0.449);
 }
