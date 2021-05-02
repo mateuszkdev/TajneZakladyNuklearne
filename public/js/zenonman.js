@@ -26,7 +26,7 @@ class ZenonMan {
         }
 
         this.ai = {
-            max: 5,
+            max: 1,
             cache: []
         }
 
@@ -73,6 +73,13 @@ class ZenonMan {
         if (document.getElementById(`${x}:${y}`).className == 'coin') return true
         else return false
 
+    }
+
+    isBarrier (x, y) {
+        if (
+            x <= 0 || y <= 0 || x >= 20 || y >= 20
+        ) return true
+        else return false
     }
 
     addCoin () {
@@ -231,7 +238,8 @@ class ZenonMan {
             let y = randomPos()
             if (
                 document.getElementById(`${x}:${y}`).className == 'floor' &&
-                !checkPlayer()
+                !checkPlayer() && 
+                document.getElementById(`${x}:${y}`).className != 'wall'
             ) {
                 i++
                 this.ai.cache.push({
@@ -258,17 +266,47 @@ class ZenonMan {
             }
         }
 
+        const directions = ['up', 'down', 'left', 'right']
+
+        const chnageDirection = (current, x, y) => {
+            let it = directions[~~(Math.random() * directions.length)]
+            if (it == current) return chnageDirection(current, x, y)
+            let c = calcNewCoords(x, y, it)
+            if (this.isWall(c.x, c.y)) return chnageDirection(current, x, y)
+            if (this.isBarrier(c.x,  c.y)) return chnageDirection(current, x, y)
+            else return it
+        }
+        
         const setTexture = (x, y, name) => {
             document.getElementById(`${x}:${y}`).className = name
         }
 
-        this.ai.cache.forEach(ai => {
+        this.ai.cache.forEach((ai, i) => {
 
-            const next = () => {
-                let move = calcNewCoords(ai.x, ai.y, ai.direction)
-                setTexture(ai.x, ai.y, ai.underself)
-                ai.underself = document.getElementById(`${move.x}:${move.y}`).className
+            const next = async () => {
+
+                if (!this.game) return
+
+                const currectCoords = {
+                    x: this.ai.cache[i].x,
+                    y: this.ai.cache[i].y,
+                    direction: this.ai.cache[i].direction
+                }
+
+                let move = calcNewCoords(currectCoords.x, currectCoords.y, currectCoords.direction)
+
+                if (this.isWall(move.x, move.y)) {
+                    this.ai.cache[i].direction = chnageDirection(currectCoords.direction, currectCoords.x, currectCoords.y)
+                    move = calcNewCoords(currectCoords.x, currectCoords.y, this.ai.cache[i].direction)
+                }
+
+                await setTexture(currectCoords.x, currectCoords.y, this.ai.cache[i].underself)
+                this.ai.cache[i].underself = document.getElementById(`${move.x}:${move.y}`).className
                 setTexture(move.x, move.y, 'bajkopisarz_zenon')
+
+                this.ai.cache[i].x = move.x
+                this.ai.cache[i].y = move.y
+
             }
 
             next(); setInterval(() => {
@@ -283,7 +321,7 @@ class ZenonMan {
         this.renderMap()
         this.wallsGenerator()
         document.getElementById(`${this.player.x}:${this.player.y}`).className = 'pierwszak'
-        this.coinsGenerator()
+        // this.coinsGenerator()
         this.aiGenerator()
         this.aiMovement()
         this.playerMovement()
