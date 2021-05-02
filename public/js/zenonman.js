@@ -257,6 +257,8 @@ class ZenonMan {
 
     aiMovement () {
 
+        // bug when ai move in to another ai, then method was glitch and create third ai
+        
         const calcNewCoords = (x, y, direction) => {
             switch (direction) {
                 case 'up': return { x: x-1, y }
@@ -348,10 +350,5 @@ const showZenonMan = () => {
     if (!localStorage.getItem('visible')) return localStorage.setItem('visible', true)
     else return 
 }
-
-const s = []
-const ebebe = (x, y) => {
-    s.push(`${x}:${y}`)
-} 
 
 new ZenonMan().start()
