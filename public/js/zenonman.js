@@ -25,6 +25,11 @@ class ZenonMan {
             total: 0
         }
 
+        this.ai = {
+            max: 5,
+            cache: []
+        }
+
     }
 
     updateTopBar () {
@@ -74,7 +79,7 @@ class ZenonMan {
         this.coins.owned++
     }
 
-    move(x, y) {
+    move (x, y) {
 
         if (this.isDefeat(x, y)) {
             this.game = false
@@ -125,7 +130,7 @@ class ZenonMan {
                     break;
                 case keyCodes.keyLeft:
 
-                        if (this.player.y- 1 >= 0) return this.move(x, --y)
+                        if (this.player.y - 1 >= 0) return this.move(x, --y)
 
                     break;
                 case keyCodes.keyRight:
@@ -190,12 +195,69 @@ class ZenonMan {
 
     }
 
+    aiGenerator () {
+
+        const randomPos = () => {
+            return ~~(Math.random() * 20)
+        }
+
+        const randomDirection = () => {
+            const directions = ['up', 'down', 'left', 'right']
+            return directions[~~~(Math.random() * directions.length)]
+        }
+
+        const checkPlayer = (x, y, direction) => {
+            let is = false
+
+            const check = (x, y) => {
+                return document.getElementById(`${x}:${y}`).className == 'pierwszak' ? true : false
+            } 
+            
+            for (let i = 0; i <= 10; i++) {
+                switch (direction) {
+                    case 'up': is = check(x-i, y); break
+                    case 'down': is = check(x+i, y); break
+                    case 'left': is = check(x, y-i); break
+                    case 'right': is = check(x, y+i); break
+                }
+                if (is) break
+            }
+
+            return is
+        }
+
+        for (let i = 0; i <= this.ai.max; i) {
+            let x = randomPos()
+            let y = randomPos()
+            if (
+                document.getElementById(`${x}:${y}`).className == 'floor' &&
+                !checkPlayer()
+            ) {
+                i++
+                this.ai.cache.push({
+                    ID: i,
+                    x, y,
+                    direction: randomDirection()
+                })
+                document.getElementById(`${x}:${y}`).className = 'bajkopisarz_zenon'
+            }
+
+        }
+
+    }
+
+    aiMovement () {
+
+    }
+
     start () {
 
         this.renderMap()
         this.wallsGenerator()
         document.getElementById(`${this.player.x}:${this.player.y}`).className = 'pierwszak'
         this.coinsGenerator()
+        this.aiGenerator()
+        this.aiMovement()
         this.playerMovement()
         this.updateTopBar()
 
