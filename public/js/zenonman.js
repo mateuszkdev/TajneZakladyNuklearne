@@ -203,7 +203,7 @@ class ZenonMan {
 
         const randomDirection = () => {
             const directions = ['up', 'down', 'left', 'right']
-            return directions[~~~(Math.random() * directions.length)]
+            return directions[~~(Math.random() * directions.length)]
         }
 
         const checkPlayer = (x, y, direction) => {
@@ -237,7 +237,8 @@ class ZenonMan {
                 this.ai.cache.push({
                     ID: i,
                     x, y,
-                    direction: randomDirection()
+                    direction: randomDirection(),
+                    underself: 'floor'
                 })
                 document.getElementById(`${x}:${y}`).className = 'bajkopisarz_zenon'
             }
@@ -248,6 +249,33 @@ class ZenonMan {
 
     aiMovement () {
 
+        const calcNewCoords = (x, y, direction) => {
+            switch (direction) {
+                case 'up': return { x: x-1, y }
+                case 'down': return { x: x+1, y }
+                case 'left': return { x, y: y-1 }
+                case 'right': return { x, y: y+1 }
+            }
+        }
+
+        const setTexture = (x, y, name) => {
+            document.getElementById(`${x}:${y}`).className = name
+        }
+
+        this.ai.cache.forEach(ai => {
+
+            const next = () => {
+                let move = calcNewCoords(ai.x, ai.y, ai.direction)
+                setTexture(ai.x, ai.y, ai.underself)
+                ai.underself = document.getElementById(`${move.x}:${move.y}`).className
+                setTexture(move.x, move.y, 'bajkopisarz_zenon')
+            }
+
+            next(); setInterval(() => {
+                next()
+            }, 1.2 * 1000)
+
+        })
     }
 
     start () {
