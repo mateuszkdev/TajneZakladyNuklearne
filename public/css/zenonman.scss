@@ -2,11 +2,22 @@ td {
     width: 25px;
     height: 25px;
     padding: 0px;
+    min-width: 25px;
+    min-height: 25px;
 }
 
+#rainbow {
+    text-align: center;
+}
+
+table {
+    margin-left: 30%;
+    margin-right: 30%;
+}
 
 #TopBar {
     font-size: 21px;
+    text-align: center;
 }
     
 .floor {
